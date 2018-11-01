@@ -7,7 +7,7 @@ from .models import *
 
 
 # Register your models here.
-@admin.register(Member, BDESecurityGroup, INSASecurityGroup, LedMailing)
+@admin.register(Member, BdeSecurityGroup, InsaSecurityGroup, LedMailing)
 class Admin(admin.ModelAdmin):
     pass
 

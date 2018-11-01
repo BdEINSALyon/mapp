@@ -23,9 +23,8 @@ TYPE_MAILING = [
 ]
 
 
-class INSASecurityGroup(models.Model):
+class InsaSecurityGroup(models.Model):
     name = models.CharField(verbose_name='Nom du groupe sur AD', blank=False, max_length=255, null=False)
-
     def __str__(self):
         return self.name
 
@@ -38,33 +37,33 @@ class LedMailing(models.Model):
         return self.mail
 
     @property
-    def email(self):
+    def cmd_generator(self):
         if (self.type == "S"):
-            liste = '';
+            liste = [];
             mail_list = self.subTeams.members.all()
             for mail in mail_list:
-                liste = liste + mail.insa_email + "\n"
+                liste.append(mail.insa_email)
             if(self.subTeams.team.check_resp is True and self.subTeams.check_resp is True):
-                mail = mail + self.subTeams.team.responsable.insa_email
+                liste.append(self.subTeams.team.responsable.insa_email)
             else:
                 return "Probleme avec les resp (sous equipe ou equipe g)"
-            return mail
+            return liste(set(liste)) #To remove duplicate
         elif(self.type == "R"):
-            liste='';
+            liste=[];
             sub_list=SubTeam.objects.filter(team=self.team).all()
             for sub in sub_list:
                 if(sub.check_resp is True):
-                    liste = liste + sub.responsable.insa_email + "\n"
+                    liste.append(sub.responsable.insa_email)
                 else:
                     return "Erreur resp sous equipe"
             if(self.team.check_resp is True):
-                liste = liste + self.team.responsable.insa_email
+                liste.append(self.team.responsable.insa_email)
             else:
                 return "Erreur resp general"
-            return liste
+            return liste(set(liste)) #To remove duplicate
 
 
-class BDESecurityGroup(models.Model):
+class BdeSecurityGroup(models.Model):
     name = models.CharField(verbose_name='Nom du groupe sur AD', blank=False, max_length=255, null=False)
 
     def __str__(self):
@@ -95,13 +94,13 @@ class Team(models.Model):
     responsable = models.ForeignKey(to=Member, null=True, on_delete=models.PROTECT, blank=True)
     resp_mailing = models.OneToOneField("LedMailing", null=True, on_delete=models.PROTECT, related_name="team",
                                         blank=True)
-    team_insa_group = models.ForeignKey("INSASecurityGroup", null=True, on_delete=models.PROTECT, related_name="+",
+    team_insa_group = models.ForeignKey("InsaSecurityGroup", null=True, on_delete=models.PROTECT, related_name="+",
                                         blank=True)
-    team_bde_group = models.ForeignKey("BDESecurityGroup", null=True, on_delete=models.PROTECT, related_name="+",
+    team_bde_group = models.ForeignKey("BdeSecurityGroup", null=True, on_delete=models.PROTECT, related_name="+",
                                        blank=True)
-    responsable_insa_group = models.ForeignKey("INSASecurityGroup", null=True, on_delete=models.PROTECT,
+    responsable_insa_group = models.ForeignKey("InsaSecurityGroup", null=True, on_delete=models.PROTECT,
                                                related_name="+", blank=True)
-    responsable_bde_group = models.ForeignKey("BDESecurityGroup", null=True, on_delete=models.PROTECT, related_name="+",
+    responsable_bde_group = models.ForeignKey("BdeSecurityGroup", null=True, on_delete=models.PROTECT, related_name="+",
                                               blank=True)
 
     def __str__(self):
