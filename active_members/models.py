@@ -82,9 +82,17 @@ class Member(models.Model):
     birthdate = models.DateField(verbose_name="Date de naissance", default=date.today, blank=True)
     promo = models.IntegerField(verbose_name='Promo INSA', null=False, blank=False)
     teams = models.ManyToManyField("SubTeam", related_name="members", blank=True)
-
     def __str__(self):
         return "{0} {1} - Promo {2}".format(self.first_name, self.last_name, self.promo)
+    @property
+    def is_ma(self):
+        return self.teams.filter(team__is_ma=True).all().count() > 0
+    @property
+    def profil_complete(self):
+        if(self.insa_username is not None and self.office365_email is not None and self.birthdate is not None):
+            return True
+        else:
+            return False
 
 
 class Team(models.Model):
