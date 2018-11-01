@@ -40,10 +40,28 @@ class LedMailing(models.Model):
     @property
     def email(self):
         if (self.type == "S"):
-            mail = self.subTeams.members.get().insa_email
+            liste = '';
+            mail_list = self.subTeams.members.all()
+            for mail in mail_list:
+                liste = liste + mail.insa_email + "\n"
+            if(self.subTeams.team.check_resp is True and self.subTeams.check_resp is True):
+                mail = mail + self.subTeams.team.responsable.insa_email
+            else:
+                return "Probleme avec les resp (sous equipe ou equipe g)"
             return mail
-        else:
-            return "none"
+        elif(self.type == "R"):
+            liste='';
+            sub_list=SubTeam.objects.filter(team=self.team).all()
+            for sub in sub_list:
+                if(sub.check_resp is True):
+                    liste = liste + sub.responsable.insa_email + "\n"
+                else:
+                    return "Erreur resp sous equipe"
+            if(self.team.check_resp is True):
+                liste = liste + self.team.responsable.insa_email
+            else:
+                return "Erreur resp general"
+            return liste
 
 
 class BDESecurityGroup(models.Model):
@@ -74,7 +92,7 @@ class Team(models.Model):
     name = models.CharField(max_length=255, verbose_name="Nom de l'équipe")
     type = models.CharField(max_length=1, choices=TYPE_EQUIPE, verbose_name="Type d'équipe")
     is_ma = models.BooleanField(verbose_name="Considère le membre comme actif ?", default=True)
-    responsable = models.ForeignKey(to=Member, null=True, on_delete=models.PROTECT, blank=True, related_name="+")
+    responsable = models.ForeignKey(to=Member, null=True, on_delete=models.PROTECT, blank=True)
     resp_mailing = models.OneToOneField("LedMailing", null=True, on_delete=models.PROTECT, related_name="team",
                                         blank=True)
     team_insa_group = models.ForeignKey("INSASecurityGroup", null=True, on_delete=models.PROTECT, related_name="+",
@@ -92,6 +110,16 @@ class Team(models.Model):
     @property
     def nombre(self):
         return Member.objects.filter(teams__in=self.subTeams.all()).distinct().count()
+    @property
+    def check_resp(self):
+        if (self.responsable is not None):
+            if (Member.objects.filter(insa_email=self.responsable.insa_email).filter(teams__in=self.subTeams.all()).count()==1):
+                return True
+            else:
+                return False
+        else:
+            return False
+
 
 
 class SubTeam(models.Model):
@@ -107,3 +135,13 @@ class SubTeam(models.Model):
     @property
     def nombre(self):
         return self.members.count()
+    @property
+    def check_resp(self):
+        if(self.responsable is not None):
+            if (Member.objects.filter(insa_email=self.responsable.insa_email).filter(
+                    teams=self).count() == 1):
+                return True
+            else:
+                return False
+        else:
+            return False
