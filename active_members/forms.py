@@ -32,5 +32,5 @@ class SubTeamForm(forms.ModelForm):
         model = SubTeam
         fields="__all__"
 
-class addMemberSubteamForm(forms.Form):
-    member = forms.ModelChoiceField(queryset=Member.objects.filter(), empty_label=None)
+class AddMemberSubteamForm(forms.Form):
+    member = forms.ModelChoiceField(queryset=Member.objects.all(), empty_label=None)
