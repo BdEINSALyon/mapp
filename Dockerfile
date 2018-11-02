@@ -6,7 +6,7 @@ WORKDIR /app
 COPY requirements.txt /app
 RUN pip3 install -r requirements.txt
 COPY . /app
-ENV DATABASE_URL postgres://postgresql:postgresql@db:5432/adhesion2
+ENV DATABASE_URL postgres://mapp@db/mapp
 ENV SECRET_KEY ''
 ENV DJANGO_ENV ''
 RUN chmod +x bash/run-prod.sh
