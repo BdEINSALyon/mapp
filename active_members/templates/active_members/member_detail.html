@@ -1,23 +1,68 @@
 {% extends "base.html" %}
 {% block content %}
-<ul>
-<div class="table-responsive">
-  <table class="table">
-      <tr>
-          <th>Prénom</th>
-          <th>Nom</th>
-          <th>Age</th>
-          <th>Email INSA</th>
-          <th>Fiche</th>
-      </tr>
-          <tr {% if object.profil_complete%} style="background-color: aquamarine" {% endif %}>
-              <td>{{ object.first_name }}</td>
-              <td>{{ object.last_name }}</td>
-              <td {% if object.age  < 18 %}style="background-color: lightcoral" {% endif %}>{{ object.age }} an{{ object.age|pluralize }}</td>
-              <td>{{ object.insa_email }}</td>
-                <td><a href="{% url "show_member" object.pk %}">Edit</a></td>
-          </tr>
-  </table>
-</div>
-</ul>
+    <div class="row">
+        <div class="col">
+            <h1 class="">{{ object.first_name }} {{ object.last_name }}</h1>
+            <a href="{% url "edit_member" object.pk %}"><button type="button" class="btn btn-warning">Editer le MA</button></a>  {% if object.adhesion_id is not None %}<button type="button" class="btn btn-success">Acceder au profil Adhésion</button>{% endif %}
+            <br>
+        </div>
+    </div>
+  <br>
+    <div class="row">
+        <div class="col-sm-3">
+            <!--left col-->
+            <ul class="list-group">
+                <li class="list-group-item text-muted" contenteditable="false">Détails</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Email INSA: </strong></span><br> {{ object.insa_email }}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Date de naissance: </strong></span><br> {{ object.birthdate }} ({{ object.age }} an{{ object.age|pluralize }})</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Sexe: </strong></span> {{ object.gender }}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Promo: </strong></span> {{ object.promo }}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Login INSA: </strong></span>{{ object.insa_username }}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Email BdE: </strong></span><br> {{ object.office365_email }}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">ID Adhésion: </strong></span> {{ object.adhesion_id }}</li>
+            </ul>
+        </div>
+        <!--/col-3-->
+        <div class="col-sm-9" style="" contenteditable="false">
+            <h3>Vérifications</h3>
+            <div class="table-responsive">
+                <table class="table">
+                    {% if object.is_va_member %}
+                        <tr class="bg-success"><td>A la carte VA :)</td></tr>
+                    {% else %}
+                        <tr class="bg-danger"><td>N'a pas la carte VA :/</td></tr>
+                    {% endif %}
+
+                    {% if object.profil_complete %}
+                        <tr class="bg-success"><td>Profil complet :)</td></tr>
+                    {% else %}
+                        <tr class="bg-danger"><td>Profil incomplet :/</td></tr>
+                    {% endif %}
+
+                    {% if object.is_ma %}
+                        <tr class="bg-success"><td>Est membre actif en ce moment :)</td></tr>
+                    {% else %}
+                        <tr class="bg-primary"><td>N'est pas membre actif en ce moment :/</td></tr>
+                    {% endif %}
+                </table>
+            </div>
+            <h3>Equipes du membre</h3>
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th width="80%">Equipe</th>
+                        <th>Page de l'équipe</th>
+                    </tr>
+                    {% for i in object.teams.all %}
+                        <tr>
+                            <td>{{ i.team.name }} - {{ i.name }}</td>
+                        <td><a href="{% url "show_subteam" i.pk %}">Edit</a></td>
+                        </tr>
+
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+    </div>
 {% endblock %}

@@ -6,9 +6,9 @@ from datetime import date
 
 # Create your models here.
 GENRES = [
-    ('H', "Homme"),
+    ('M', "Homme"),
     ('F', "Femme"),
-    ('I', 'Indéfini/Inconnu')
+    ('U', 'Indéfini/Inconnu')
 ]
 TYPE_EQUIPE = [
     ('M', "Manifs"),
@@ -78,7 +78,7 @@ class Member(models.Model):
     insa_email = models.EmailField(verbose_name='Email INSA', blank=False, max_length=255, null=False, unique=True)
     insa_username = models.CharField(verbose_name='Login INSA', blank=True, max_length=20, null=True)
     office365_email = models.EmailField(verbose_name='Email BdE', blank=True, max_length=255, null=True)
-    genre = models.CharField(max_length=1, choices=GENRES, default='I')
+    gender = models.CharField(max_length=1, choices=GENRES, default='U')
     birthdate = models.DateField(verbose_name="Date de naissance", default=date.today, blank=True)
     promo = models.IntegerField(verbose_name='Promo INSA', null=False, blank=False)
     teams = models.ManyToManyField("SubTeam", related_name="members", blank=True)
@@ -97,6 +97,9 @@ class Member(models.Model):
     def age(self):
         delta = date.today() - self.birthdate
         return delta.days//365
+    @property
+    def is_va_member(self):
+        return False
 
 
 class Team(models.Model):
