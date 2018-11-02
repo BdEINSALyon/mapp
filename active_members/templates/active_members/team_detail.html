@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h1 class="">{{ object.name }}</h1>
+            <a href="{% url "edit_team" object.pk %}"><button type="button" class="btn btn-warning">Editer l'équipe</button></a>
+            <br>
+        </div>
+    </div>
+  <br>
+    <div class="row">
+        <div class="col-sm-3">
+            <!--left col-->
+            <ul class="list-group">
+                <li class="list-group-item text-muted" contenteditable="false">Détails</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Type: </strong></span> {{ object.type }}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Responsable: </strong></span><br> {{ object.responsable }}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Mailing Resp: </strong></span><br> {{ object.resp_mailing }}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Effectif: </strong></span> {{ object.nombre }}</li>
+            </ul><br>
+            <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+                <div class="card-header">Zone dangeureuse</div>
+                <div class="card-body" align="center">
+                    <form method="get" action="{% url "clean_team" object.pk %}">
+                        <button class="btn btn-secondary" onclick="return confirm('Etes vous sur ? Ceci est irréversible')">Vider la sous-équipe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--/col-3-->
+        <div class="col-sm-9" style="" contenteditable="false">
+            <h3>Vérifications</h3>
+            <div class="table-responsive">
+                <table class="table">
+                    {% if object.check_resp %}
+                        <tr class="bg-success"><td>Définition du responsable OK</td></tr>
+                    {% else %}
+                        <tr class="bg-danger"><td>Problème dans le responsable</td></tr>
+                    {% endif %}
+                </table>
+            </div>
+            <h3>Sous-Equipes</h3>
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th width="40%">Nom</th>
+                        <th width="40%">Responsable</th>
+                        <th>Effectif</th>
+                        <th>Voir fiche</th>
+                    </tr>
+                    {% for i in object.subTeams.all %}
+                        <tr {% if not i.check_resp%} style="background-color: lightcoral" {% endif %}>
+                            <td>{{ i.name }}</td>
+                            <td>{{ i.responsable }}</td>
+                            <td>{{ i.nombre }}</td>
+                            <td><a href="{% url "show_subteam" i.pk %}">Voir</a></td>
+                        </tr>
+
+                    {% endfor %}
+                </table>
+            </div>
+            <h3>Membres</h3>
+                        <div class="table_responsive">
+                <table class="table">
+                    <tr>
+                        <th>Membre</th>
+                        <th>Sous-Equipe</th>
+                        <th>Voir fiche</th>
+                    </tr>
+            {% for i in object.subTeams.all %}
+                    {% for j in i.members.all %}
+                        <tr {% if not j.profil_complete%} style="background-color: lightcoral" {% endif %}>
+                        <td>{{ j.first_name }} {{ j.last_name }}</td>
+                        <td>{{ i.name }}</td>
+                        <td><a href="{% url "show_member" j.pk %}">Voir</a></td>
+                        </tr>
+                    {% endfor %}
+
+            {% endfor %}
+                 </table>
+                </div>
+        </div>
+
+    </div>
+{% endblock %}

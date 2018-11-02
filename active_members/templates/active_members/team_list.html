@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<ul>
+<div class="row">Aller dans l'admin pour ajouter une sous-equipe</div><br/>
+<div class="table-responsive">
+  <table class="table">
+      <tr>
+          <th>Nom</th>
+          <th>Responsable</th>
+          <th>Sous-Equipe</th>
+          <th>Effectif</th>
+          <th>Fiche</th>
+      </tr>
+      {% for team in object_list %}
+          <tr {% if not team.check_all_ok%} style="background-color: lightcoral" {% endif %}>
+              <td>{{ team.name }}</td>
+              <td>{{ team.responsable }}</td>
+              <td >{{ team.nombre_sous_equipe }}</td>
+              <td >{{ team.nombre }}</td>
+          <td><a href="{% url "show_team" team.pk %}">Edit</a></td>
+          </tr>
+      {% endfor %}
+  </table>
+</div>
+</ul>
+{% endblock %}

@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col">
             <h1 class="">{{ object.team.name }} - {{ object.name }}</h1>
-            <a href="{% url "edit_member" object.pk %}"><button type="button" class="btn btn-warning">Editer la sous équipe</button></a>
+            <a href="{% url "show_team" object.team.pk %}"><button type="button" class="btn btn-primary">Voir équipe parente</button></a> <a href="{% url "edit_subteam" object.pk %}"><button type="button" class="btn btn-warning">Editer la sous équipe</button></a> <a href="{% url "edit_member_subteam" object.pk %}"><button type="button" class="btn btn-success">Ajouter un membre</button></a>
             <br>
         </div>
     </div>
@@ -16,7 +16,15 @@
                 <li class="list-group-item text-right"><span class="pull-left"><strong class="">Responsable: </strong></span><br> {{ object.responsable }}</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong class="">Mailing: </strong></span><br> {{ object.mailing }}</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong class="">Effectif: </strong></span> {{ object.nombre }}</li>
-            </ul>
+            </ul><br/><br/>
+            <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+                <div class="card-header">Zone dangeureuse</div>
+                <div class="card-body" align="center">
+                    <form method="get" action="{% url "clean_subteam" object.pk %}">
+                        <button class="btn btn-secondary" onclick="return confirm('Etes vous sur ? Ceci est irréversible')">Vider la sous-équipe</button>
+                    </form>
+                </div>
+            </div>
         </div>
         <!--/col-3-->
         <div class="col-sm-9" style="" contenteditable="false">
@@ -30,7 +38,7 @@
                     {% endif %}
                 </table>
             </div>
-            <h3>Equipes du membre</h3>
+            <h3>Membres</h3>
             <div class="table-responsive">
                 <table class="table">
                     <tr>

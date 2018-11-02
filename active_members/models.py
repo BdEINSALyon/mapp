@@ -134,6 +134,19 @@ class Team(models.Model):
         else:
             return False
     @property
+    def nombre_sous_equipe(self):
+        return self.subTeams.count()
+    @property
+    def check_all_ok(self):
+        check = True
+        teams = SubTeam.objects.filter(team=self)
+        for team in teams:
+            if(not team.check_resp):
+                check = False
+        if(not self.check_resp):
+            check = False
+        return check
+    @property
     def clean_team(self):
         teams=SubTeam.objects.filter(team=self)
         for team in teams:

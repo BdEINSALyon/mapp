@@ -1,5 +1,5 @@
 from django import forms
-from .models import Member
+from .models import Member, Team, SubTeam
 BIRTH_YEAR_CHOICES = ['']
 for i in range(1992,2005):
     BIRTH_YEAR_CHOICES.append(i)
@@ -18,3 +18,19 @@ class MemberForm(forms.ModelForm):
             'last_name': ('Obligatoire'),
             'promo': ('Obligatoire'),
         }
+
+class TeamForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        fields="__all__"
+    # def __init__(self, *args, **kwargs):
+    #     super(TeamForm, self).__init__(*args, **kwargs)
+    #     self.fields['responsable'].queryset = Member.objects.filter(is_ma=True).all()
+
+class SubTeamForm(forms.ModelForm):
+    class Meta:
+        model = SubTeam
+        fields="__all__"
+
+class addMemberSubteamForm(forms.Form):
+    member = forms.ModelChoiceField(queryset=Member.objects.filter(), empty_label=None)

@@ -1,25 +1,65 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import CreateView, UpdateView
 from django.urls import reverse
-from .models import Member, SubTeam
-from .forms import MemberForm
+from .models import Member, SubTeam, Team
+from .forms import MemberForm, TeamForm, SubTeamForm, addMemberSubteamForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class MemberCreate(CreateView):
+class MemberCreate(LoginRequiredMixin,CreateView):
     model = Member
-    template_name = 'active_members/add_membre.html'
+    template_name = 'active_members/form_basic.html'
     form_class = MemberForm
     def get_success_url(self):
         return reverse('show_member', args=(self.object.pk,))
 
-class MemberUpdate(UpdateView):
+class MemberUpdate(LoginRequiredMixin,UpdateView):
     model = Member
-    template_name = 'active_members/add_membre.html'
+    template_name = 'active_members/form_basic.html'
     form_class = MemberForm
     def get_success_url(self):
         return reverse('show_member', args=(self.object.pk,))
 
-def deleteMemberSubteam(request):
-    member = Member.objects.get(pk=request.pk_membre)
-    subteam=SubTeam.objects.get(pk=request.pk_subteam)
+class TeamUpdate(LoginRequiredMixin,UpdateView):
+    model = Team
+    template_name = 'active_members/form_basic.html'
+    form_class = TeamForm
+    def get_success_url(self):
+        return reverse('show_team', args=(self.object.pk,))
+
+class SubTeamUpdate(LoginRequiredMixin,UpdateView):
+    model = SubTeam
+    template_name = 'active_members/form_basic.html'
+    form_class = SubTeamForm
+    def get_success_url(self):
+        return reverse('show_subteam', args=(self.object.pk,))
+
+
+def add_member_subteam(request, pk):
+    form = addMemberSubteamForm(request.POST or None)
+    if form.is_valid():
+        member = form.cleaned_data['member']
+        team = SubTeam.objects.get(pk=pk)
+        member.teams.add(team)
+        return redirect(reverse('show_subteam', args=(pk,)))
+    else:
+        return render(request, 'active_members/form_basic.html', locals())
+
+@login_required
+def deleteMemberSubteam(request, pk_member, pk_subteam):
+    member = Member.objects.get(pk=pk_member)
+    subteam = SubTeam.objects.get(pk=pk_subteam)
     member.teams.remove(subteam)
-    return reverse('show_subteam', args=(request.pk_subteam,))
+    return redirect(reverse('show_subteam', args=(pk_subteam,)))
+
+@login_required
+def cleanSubteam(request, pk_subteam):
+    subteam = SubTeam.objects.get(pk=pk_subteam)
+    subteam.clean_team
+    return redirect(reverse('show_subteam', args=(pk_subteam,)))
+
+@login_required
+def cleanTeam(request, pk_team):
+    team = Team.objects.get(pk=pk_team)
+    team.clean_team
+    return redirect(reverse('show_team', args=(pk_team,)))
