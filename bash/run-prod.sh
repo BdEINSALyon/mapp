@@ -1,4 +1,2 @@
-#!/bin/sh
-yes yes | pipenv run python manage.py migrate && \
-pipenv run python manage.py collectstatic --noinput && \
-pipenv run gunicorn mapp.wsgi -b 0.0.0.0:8000 --log-file -
+#!/usr/bin/env bash
+yes yes | python3 manage.py migrate && python3 manage.py collectstatic --noinput && gunicorn mapp.wsgi -b 0.0.0.0:8000 --log-file -
