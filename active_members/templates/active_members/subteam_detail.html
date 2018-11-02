@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h1 class="">{{ object.team.name }} - {{ object.name }}</h1>
+            <a href="{% url "edit_member" object.pk %}"><button type="button" class="btn btn-warning">Editer la sous équipe</button></a>
+            <br>
+        </div>
+    </div>
+  <br>
+    <div class="row">
+        <div class="col-sm-3">
+            <!--left col-->
+            <ul class="list-group">
+                <li class="list-group-item text-muted" contenteditable="false">Détails</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Responsable: </strong></span><br> {{ object.responsable }}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Mailing: </strong></span><br> {{ object.mailing }}</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Effectif: </strong></span> {{ object.nombre }}</li>
+            </ul>
+        </div>
+        <!--/col-3-->
+        <div class="col-sm-9" style="" contenteditable="false">
+            <h3>Vérifications</h3>
+            <div class="table-responsive">
+                <table class="table">
+                    {% if object.check_resp %}
+                        <tr class="bg-success"><td>Définition du responsable OK</td></tr>
+                    {% else %}
+                        <tr class="bg-danger"><td>Problème dans le responsable</td></tr>
+                    {% endif %}
+                </table>
+            </div>
+            <h3>Equipes du membre</h3>
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th width="80%">Membre</th>
+                        <th>Supprimer</th>
+                    </tr>
+                    {% for i in object.members.all %}
+                        <tr>
+                            <td>{{ i.first_name }} {{ i.last_name }}</td>
+                        <td><a href="{% url "delete_member_subteam" object.pk i.pk %}">Edit</a></td>
+                        </tr>
+
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

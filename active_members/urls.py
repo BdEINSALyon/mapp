@@ -11,4 +11,5 @@ urlpatterns = [
     path('member/edit/<int:pk>', views.MemberUpdate.as_view(), name='edit_member'),
     path('member/add', views.MemberCreate.as_view(), name='create_member'),
     path('subteam/<int:pk>', DetailView.as_view(model=SubTeam), name='show_subteam'),
+    path('subteam/<int:pk_subteam>/delete/<int:pk_membre>', views.deleteMemberSubteam, name='delete_member_subteam'),
 ]
