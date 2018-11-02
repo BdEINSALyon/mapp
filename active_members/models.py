@@ -126,6 +126,13 @@ class Team(models.Model):
                 return False
         else:
             return False
+    @property
+    def clean_team(self):
+        teams=SubTeam.objects.filter(team=self)
+        for team in teams:
+            team.clean_team
+        self.responsable=None
+        self.save()
 
 
 
@@ -152,3 +159,10 @@ class SubTeam(models.Model):
                 return False
         else:
             return False
+    @property
+    def clean_team(self):
+        members=Member.objects.filter(teams=self)
+        for member in members:
+            member.teams.remove(self)
+        self.responsable=None
+        self.save()
