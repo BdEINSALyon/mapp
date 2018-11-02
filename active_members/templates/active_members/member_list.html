@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<ul>
+<div class="table-responsive">
+  <table class="table">
+      <tr>
+          <th>Prénom</th>
+          <th>Nom</th>
+          <th>Age</th>
+          <th>Email INSA</th>
+          <th>Fiche</th>
+      </tr>
+      {% for member in object_list %}
+          <tr {% if member.profil_complete%} style="background-color: aquamarine" {% endif %}>
+              <td>{{ member.first_name }}</td>
+              <td>{{ member.last_name }}</td>
+              <td {% if member.age  < 18 %}style="background-color: lightcoral" {% endif %}>{{ member.age }} an{{ member.age|pluralize }}</td>
+          <td>{{ member.insa_email }}</td>
+          <td><a href="{% url "show_member" member.pk %}">Edit</a></td>
+          </tr>
+      {% endfor %}
+  </table>
+</div>
+</ul>
+{% endblock %}

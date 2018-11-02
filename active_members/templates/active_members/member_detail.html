@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<ul>
+<div class="table-responsive">
+  <table class="table">
+      <tr>
+          <th>Prénom</th>
+          <th>Nom</th>
+          <th>Age</th>
+          <th>Email INSA</th>
+          <th>Fiche</th>
+      </tr>
+          <tr {% if object.profil_complete%} style="background-color: aquamarine" {% endif %}>
+              <td>{{ object.first_name }}</td>
+              <td>{{ object.last_name }}</td>
+              <td {% if object.age  < 18 %}style="background-color: lightcoral" {% endif %}>{{ object.age }} an{{ object.age|pluralize }}</td>
+              <td>{{ object.insa_email }}</td>
+                <td><a href="{% url "show_member" object.pk %}">Edit</a></td>
+          </tr>
+  </table>
+</div>
+</ul>
+{% endblock %}

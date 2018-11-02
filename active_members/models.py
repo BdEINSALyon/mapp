@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.utils.datetime_safe import date
+from datetime import date
 
 # Create your models here.
 GENRES = [
@@ -93,6 +93,10 @@ class Member(models.Model):
             return True
         else:
             return False
+    @property
+    def age(self):
+        delta = date.today() - self.birthdate
+        return delta.days//365
 
 
 class Team(models.Model):
