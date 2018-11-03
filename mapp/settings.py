@@ -26,7 +26,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'd=&6kb-g=%*-vo+j#)2aq_kf&d)^)9yl9lv0wge^1f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DJANGO_ENV', 'prod') == 'dev'
 
-ALLOWED_HOSTS = ['mapp.bde-insa-lyon.fr']
+ALLOWED_HOSTS = ['mapp.app.bde-insa-lyon.fr']
 
 if DEBUG:
     ALLOWED_HOSTS.extend(['localhost'])
