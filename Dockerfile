@@ -10,4 +10,4 @@ ENV DATABASE_URL postgres://mapp@db/mapp
 ENV SECRET_KEY ''
 ENV DJANGO_ENV ''
 RUN chmod +x bash/run-prod.sh
-CMD bash/run-prod.sh
+CMD bash/run-prod.sh@

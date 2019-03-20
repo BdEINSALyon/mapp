@@ -24,12 +24,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY', 'd=&6kb-g=%*-vo+j#)2aq_kf&d)^)9yl9lv0wge^1f*q6u$ym+')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_ENV', 'prod') == 'dev'
+DEBUG = os.getenv('DJANGO_ENV', 'dev') == 'dev'
 
 ALLOWED_HOSTS = ['mapp.app.bde-insa-lyon.fr']
 
 if DEBUG:
     ALLOWED_HOSTS.extend(['localhost'])
+    ALLOWED_HOSTS.extend(['127.0.0.1'])
 
 
 
