@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 class MemberCreate(LoginRequiredMixin,CreateView):
     model = Member
-    template_name = 'active_members/form_basic.html'
+    template_name = 'active_members/form_new.html'
     form_class = MemberForm
     def get_success_url(self):
         return reverse('show_member', args=(self.object.pk,))

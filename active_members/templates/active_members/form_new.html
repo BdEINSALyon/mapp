@@ -7,4 +7,13 @@
     {{ form|crispy }}
 <button class="btn btn-primary" style="width:100%">Enregistrer</button>
 </form>
+
+<script>
+function updateMail(){
+    console.log('pop');
+    console.log(document.getElementsByName("first_name")[0]);
+    document.getElementsByName("insa_email")[0].value=(document.getElementsByName("first_name")[0].value).toLowerCase()+(document.getElementsByName("last_name")[0].value).toLowerCase()+"@insa-lyon.fr"
+}
+$("td[name=last_name]").change(updateMail())
+</script>
 {% endblock %}
