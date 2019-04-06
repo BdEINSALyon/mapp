@@ -3,7 +3,11 @@
     <div class="row">
         <div class="col">
             <h1 class="">{{ object.first_name }} {{ object.last_name }}</h1>
-            <a href="{% url "edit_member" object.pk %}"><button type="button" class="btn btn-warning">Editer le MA</button></a>  {% if object.adhesion_id is not None %}<button type="button" class="btn btn-success">Acceder au profil Adhésion</button>{% endif %}
+            <a href="{% url "edit_member" object.pk %}"><button type="button" class="btn btn-warning">Editer le MA</button></a>
+            <a href="{% url "sync_member" object.pk %}"><button type="button" class="btn btn-warning">Sync le MA</button></a>
+            {% if object.adhesion_id is not None %}
+                <a href="{% url "update_membership_member" object.pk %}"><button type="button" class="btn btn-warning">Mettre à jour VA</button></a>
+                <button type="button" class="btn btn-success">Acceder au profil Adhésion</button>{% endif %}
             <br>
         </div>
     </div>
@@ -27,7 +31,7 @@
             <h3>Vérifications</h3>
             <div class="table-responsive">
                 <table class="table">
-                    {% if object.is_va_member %}
+                    {% if object.has_valid_membership %}
                         <tr class="bg-success"><td>A la carte VA :)</td></tr>
                     {% else %}
                         <tr class="bg-danger"><td>N'a pas la carte VA :/</td></tr>

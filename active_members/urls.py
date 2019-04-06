@@ -11,6 +11,8 @@ urlpatterns = [
     path('member/<int:pk>', login_required(DetailView.as_view(model=Member)), name='show_member'),
     path('member/edit/<int:pk>', views.MemberUpdate.as_view(), name='edit_member'),
     path('member/add', login_required(views.memberCreate), name='create_member'),
+    path('member/sync/<int:pk>', login_required(views.sync_member), name="sync_member"),
+    path('member/update_membership/<int:pk>', login_required(views.update_membership), name="update_membership_member"),
     path('subteam/<int:pk>', login_required(DetailView.as_view(model=SubTeam)), name='show_subteam'),
     path('subteam/add_member/<int:pk>', views.add_member_subteam, name='edit_member_subteam'),
     path('subteam/edit/<int:pk>', views.SubTeamUpdate.as_view(), name='edit_subteam'),

@@ -72,7 +72,8 @@ class BdeSecurityGroup(models.Model):
 
 class Member(models.Model):
     adhesion_id = models.IntegerField(verbose_name='ID sur Adhésion', unique=True, null=True,
-                                      blank=True)  # Non utilisé pour l'instant
+                                      blank=True)
+    has_valid_membership = models.BooleanField("A la carte VA", null=False, default=False)
     last_name = models.CharField(verbose_name='Nom', blank=False, max_length=255, null=False)
     first_name = models.CharField(verbose_name='Prénom', blank=False, max_length=255, null=False)
     insa_email = models.EmailField(verbose_name='Email INSA', blank=False, max_length=255, null=False, unique=True)
@@ -97,9 +98,6 @@ class Member(models.Model):
     def age(self):
         delta = date.today() - self.birthdate
         return delta.days//365
-    @property
-    def is_va_member(self):
-        return False
 
 
 class Team(models.Model):

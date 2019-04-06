@@ -130,3 +130,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
+
+ADHESION_CLIENT_ID = os.environ.get("ADHESION_CLIENT_ID")
+ADHESION_CLIENT_SECRET = os.environ.get("ADHESION_CLIENT_SECRET")
+ADHESION_URL=os.environ.get("ADHESION_URL", "https://api.adhesion.bde-insa-lyon.fr") # sans le / à la fin
