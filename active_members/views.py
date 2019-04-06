@@ -11,10 +11,10 @@ def memberCreate(request):
     form = MemberForm(request.POST or None)
     if form.is_valid():
         content = form.save()
-        print(form.subTeam)
-        content.teams.add(form.subTeam)
+        print(form.cleaned_data["subTeam"])
+        content.teams.add(form.cleaned_data["subTeam"])
         content.save()
-        return reverse('show_member', args=(content.pk,))
+        return redirect(reverse('show_member', args=[content.pk]))
     else:
         return render(request, 'active_members/form_basic.html', {"form": form})
 
