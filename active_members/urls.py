@@ -6,11 +6,11 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     # Nous allons réécrire l'URL de l'accueil
-    path('',login_required(ListView.as_view(model=Member,))),
+    path('',login_required(ListView.as_view(model=Member,)), name="home"),
     path('member', login_required(ListView.as_view(model=Member,)), name='list_member'),
     path('member/<int:pk>', login_required(DetailView.as_view(model=Member)), name='show_member'),
     path('member/edit/<int:pk>', views.MemberUpdate.as_view(), name='edit_member'),
-    path('member/add', views.MemberCreate.as_view(), name='create_member'),
+    path('member/add', login_required(views.memberCreate), name='create_member'),
     path('subteam/<int:pk>', login_required(DetailView.as_view(model=SubTeam)), name='show_subteam'),
     path('subteam/add_member/<int:pk>', views.add_member_subteam, name='edit_member_subteam'),
     path('subteam/edit/<int:pk>', views.SubTeamUpdate.as_view(), name='edit_subteam'),

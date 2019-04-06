@@ -9,11 +9,13 @@
 </form>
 
 <script>
-function updateMail(){
+/*function updateMail(){
     console.log('pop');
     console.log(document.getElementsByName("first_name")[0]);
+    console.log($("input[name=last_name]")[0]);
     document.getElementsByName("insa_email")[0].value=(document.getElementsByName("first_name")[0].value).toLowerCase()+(document.getElementsByName("last_name")[0].value).toLowerCase()+"@insa-lyon.fr"
-}
-$("td[name=last_name]").change(updateMail())
+}*/
+console.log($('#id_last_name'))
+$('#id_last_name').bind("input", console.log('bite'))
 </script>
 {% endblock %}

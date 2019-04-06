@@ -1,10 +1,15 @@
 from django import forms
 from .models import Member, Team, SubTeam
+from django.utils import timezone
+from bootstrap_datepicker_plus import DatePickerInput
+
 BIRTH_YEAR_CHOICES = ['']
 for i in range(1992,2005):
     BIRTH_YEAR_CHOICES.append(i)
 
+
 class MemberForm(forms.ModelForm):
+    subTeam = forms.ModelChoiceField(queryset=SubTeam.objects.all())
     class Meta:
         model = Member
         exclude = ('teams',)
@@ -18,6 +23,15 @@ class MemberForm(forms.ModelForm):
             'last_name': ('Obligatoire'),
             'promo': ('Obligatoire'),
         }
+        now = timezone.now()
+        widgets = {'birthdate': DatePickerInput(format='%d/%m/%Y', options={
+        "showClose": False,
+        "showClear": False,
+        "showTodayButton": False,
+        "locale": "fr",
+        "minDate": now.isoformat(),
+        "defaultDate": now.isoformat(),
+        })}
 
 class TeamForm(forms.ModelForm):
     class Meta:
