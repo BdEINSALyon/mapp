@@ -4,15 +4,16 @@ from django.utils import timezone
 from bootstrap_datepicker_plus import DatePickerInput
 
 BIRTH_YEAR_CHOICES = ['']
-for i in range(1992,2005):
+for i in range(1992, 2005):
     BIRTH_YEAR_CHOICES.append(i)
 
 
 class MemberForm(forms.ModelForm):
     subTeam = forms.ModelChoiceField(queryset=SubTeam.objects.all())
+
     class Meta:
         model = Member
-        exclude = ('teams',)
+        exclude = ('adhesion_id', 'teams',)
         widgets = {
             'birthdate': forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES),
         }
@@ -25,26 +26,29 @@ class MemberForm(forms.ModelForm):
         }
         now = timezone.now()
         widgets = {'birthdate': DatePickerInput(format='%d/%m/%Y', options={
-        "showClose": False,
-        "showClear": False,
-        "showTodayButton": False,
-        "locale": "fr",
-        "minDate": now.isoformat(),
-        "defaultDate": now.isoformat(),
+            "showClose": False,
+            "showClear": False,
+            "showTodayButton": False,
+            "locale": "fr",
+            "minDate": now.isoformat(),
+            "defaultDate": now.isoformat(),
         })}
+
 
 class TeamForm(forms.ModelForm):
     class Meta:
         model = Team
-        fields="__all__"
+        fields = "__all__"
     # def __init__(self, *args, **kwargs):
     #     super(TeamForm, self).__init__(*args, **kwargs)
     #     self.fields['responsable'].queryset = Member.objects.filter(is_ma=True).all()
 
+
 class SubTeamForm(forms.ModelForm):
     class Meta:
         model = SubTeam
-        fields="__all__"
+        fields = "__all__"
+
 
 class AddMemberSubteamForm(forms.Form):
     member = forms.ModelChoiceField(queryset=Member.objects.all(), empty_label=None)

@@ -9,13 +9,14 @@
 </form>
 
 <script>
-/*function updateMail(){
-    console.log('pop');
-    console.log(document.getElementsByName("first_name")[0]);
-    console.log($("input[name=last_name]")[0]);
-    document.getElementsByName("insa_email")[0].value=(document.getElementsByName("first_name")[0].value).toLowerCase()+(document.getElementsByName("last_name")[0].value).toLowerCase()+"@insa-lyon.fr"
-}*/
-console.log($('#id_last_name'))
-$('#id_last_name').bind("input", console.log('bite'))
+function updateUserInfo(){
+    email = $( "#id_first_name" ).val().toLowerCase() + "." + $( "#id_last_name" ).val().toLowerCase() + "@insa-lyon.fr";
+    insa_login = $( "#id_first_name" ).val().toLowerCase().charAt(0) + $( "#id_last_name" ).val().toLowerCase();
+    $("#id_insa_email").val(email);
+    $("#id_insa_username").val(insa_login);
+}
+$( "#id_last_name" ).blur(updateUserInfo);
+$( "#id_first_name" ).blur(updateUserInfo);
+
 </script>
 {% endblock %}
