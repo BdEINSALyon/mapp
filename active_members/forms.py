@@ -30,13 +30,10 @@ class MemberCreateForm(forms.ModelForm):
             "locale": "fr",
             "minDate": now.isoformat(),
             "defaultDate": now.isoformat(),
-        }),
-                   'teams': forms.Select()}
+        })}
 
 
 class MemberForm(forms.ModelForm):
-    subTeam = forms.ModelChoiceField(queryset=SubTeam.objects.all())
-
     class Meta:
         model = Member
         exclude = ('adhesion_id', 'teams',)

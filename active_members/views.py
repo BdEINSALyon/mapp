@@ -59,6 +59,7 @@ def sync_member(request, pk):
             member.adhesion_id = adhesion_member[0]["id"]
             member.has_valid_membership = adhesion_member[0]["has_valid_membership"]
             member.save()
+    return redirect(reverse('show_member', args=[member.pk]))
 
 
 def update_membership(request, pk):

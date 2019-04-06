@@ -104,17 +104,18 @@ class Team(models.Model):
     name = models.CharField(max_length=255, verbose_name="Nom de l'équipe")
     type = models.CharField(max_length=1, choices=TYPE_EQUIPE, verbose_name="Type d'équipe")
     is_ma = models.BooleanField(verbose_name="Considère le membre comme actif ?", default=True)
-    responsable = models.ForeignKey(to=Member, null=True, on_delete=models.PROTECT, blank=True)
-    resp_mailing = models.OneToOneField("LedMailing", null=True, on_delete=models.PROTECT, related_name="team",
+    responsable = models.ForeignKey("Member", null=True, on_delete=models.PROTECT, blank=True)
+    resp_mailing = models.ForeignKey("LedMailing", null=True, on_delete=models.PROTECT, related_name="team",
                                         blank=True)
     team_insa_group = models.ForeignKey("InsaSecurityGroup", null=True, on_delete=models.PROTECT, related_name="+",
                                         blank=True)
     team_bde_group = models.ForeignKey("BdeSecurityGroup", null=True, on_delete=models.PROTECT, related_name="+",
-                                       blank=True)
+                                        blank=True)
     responsable_insa_group = models.ForeignKey("InsaSecurityGroup", null=True, on_delete=models.PROTECT,
-                                               related_name="+", blank=True)
+                                               related_name="+",
+                                        blank=True)
     responsable_bde_group = models.ForeignKey("BdeSecurityGroup", null=True, on_delete=models.PROTECT, related_name="+",
-                                              blank=True)
+                                        blank=True)
 
     def __str__(self):
         return "{0} ".format(self.name)
@@ -156,8 +157,8 @@ class Team(models.Model):
 
 class SubTeam(models.Model):
     name = models.CharField(max_length=255, verbose_name="Nom de l'équipe")
-    responsable = models.ForeignKey(to=Member, null=True, on_delete=models.PROTECT, blank=True, related_name="+")
-    mailing = models.OneToOneField("LedMailing", null=True, on_delete=models.PROTECT, related_name="subTeams",
+    responsable = models.ForeignKey(to=Member, null=True, on_delete=models.PROTECT, blank=True, related_name="resp")
+    mailing = models.ForeignKey("LedMailing", null=True, on_delete=models.PROTECT, related_name="subTeams",
                                    blank=True)
     team = models.ForeignKey("Team", null=False, on_delete=models.PROTECT, related_name="subTeams", blank=False)
 
