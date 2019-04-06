@@ -6,12 +6,18 @@ from .forms import MemberForm, TeamForm, SubTeamForm, AddMemberSubteamForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-class MemberCreate(LoginRequiredMixin,CreateView):
-    model = Member
-    template_name = 'active_members/form_basic.html'
-    form_class = MemberForm
-    def get_success_url(self):
-        return reverse('show_member', args=(self.object.pk,))
+
+def memberCreate(request):
+    form = MemberForm(request.POST or None)
+    if form.is_valid():
+        content = form.save()
+        print(form.subTeam)
+        content.teams.add(form.subTeam)
+        content.save()
+        return reverse('show_member', args=(content.pk,))
+    else:
+        return render(request, 'active_members/form_basic.html', {"form": form})
+
 
 class MemberUpdate(LoginRequiredMixin,UpdateView):
     model = Member

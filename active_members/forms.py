@@ -4,7 +4,9 @@ BIRTH_YEAR_CHOICES = ['']
 for i in range(1992,2005):
     BIRTH_YEAR_CHOICES.append(i)
 
+
 class MemberForm(forms.ModelForm):
+    subTeam = forms.ModelChoiceField(queryset=SubTeam.objects.all())
     class Meta:
         model = Member
         exclude = ('teams',)
