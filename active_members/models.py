@@ -161,6 +161,7 @@ class SubTeam(models.Model):
     mailing = models.ForeignKey("LedMailing", null=True, on_delete=models.PROTECT, related_name="subTeams",
                                    blank=True)
     team = models.ForeignKey("Team", null=False, on_delete=models.PROTECT, related_name="subTeams", blank=False)
+    recruit_open = models.BooleanField(default=False)
 
     def __str__(self):
         return "{0} -  {1}".format(self.team.name, self.name)

@@ -9,9 +9,10 @@ for i in range(1992, 2005):
 
 
 class MemberCreateForm(forms.ModelForm):
+    teams_form = forms.ModelChoiceField(queryset=SubTeam.objects.all())
     class Meta:
         model = Member
-        exclude = ('adhesion_id',)
+        exclude = ('adhesion_id', 'teams')
         widgets = {
             'birthdate': forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES),
         }

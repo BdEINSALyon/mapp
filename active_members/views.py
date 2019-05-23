@@ -16,6 +16,8 @@ def memberCreate(request):
     form = MemberCreateForm(request.POST or None)
     if form.is_valid():
         content = form.save()
+        content.teams.add(form.cleaned_data['teams_form'].pk)
+        content.save()
         return redirect(reverse('show_member', args=[content.pk]))
     else:
         return render(request, 'active_members/form_new.html', {"form": form})
