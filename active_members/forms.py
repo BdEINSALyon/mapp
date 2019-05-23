@@ -54,7 +54,6 @@ class MemberForm(forms.ModelForm):
             "showClear": False,
             "showTodayButton": False,
             "locale": "fr",
-            "minDate": now.isoformat(),
             "defaultDate": now.isoformat(),
         })}
 
