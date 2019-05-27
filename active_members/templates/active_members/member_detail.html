@@ -60,7 +60,7 @@
                     {% for i in object.teams.all %}
                         <tr>
                             <td>{{ i.team.name }} - {{ i.name }}</td>
-                        <td><a href="{% url "show_subteam" i.pk %}">Edit</a></td>
+                        <td><a href="{% url "show_subteam" i.pk %}">Voir</a></td>
                         </tr>
 
                     {% endfor %}
