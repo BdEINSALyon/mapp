@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     # Nous allons réécrire l'URL de l'accueil
-    path('',login_required(ListView.as_view(model=Member,)), name="home"),
+    path('',login_required(ListView.as_view(model=Member,paginate_by=30)), name="home"),
     path('member', login_required(ListView.as_view(model=Member,paginate_by=30)), name='list_member'),
     path('member/<int:pk>', login_required(DetailView.as_view(model=Member)), name='show_member'),
     path('member/edit/<int:pk>', views.MemberUpdate.as_view(), name='edit_member'),
